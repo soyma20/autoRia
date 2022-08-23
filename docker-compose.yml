@@ -4,5 +4,20 @@ services:
   app:
     build:
       context: .
+    ports:
+      - "8888:8080"
     volumes:
-      - ./backend
+      - ./backend:/app
+    restart: on-failure
+    command: >
+      sh -c "/wait-for-it.sh db:3306 -- java -jar app.jar"
+      
+  db:
+    image: mysql:8
+    ports:
+      - "3307:3306"
+    env_file:
+      - .env
+    volumes:
+      - ./mysql_db:/var/lib/mysql
+    restart: on-failure

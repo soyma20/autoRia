@@ -5,6 +5,7 @@ import com.example.autoria.dto.CarResponseDTO;
 import com.example.autoria.models.CarModel;
 import com.example.autoria.models.Currency;
 import com.example.autoria.models.Roles;
+import com.example.autoria.services.CarService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,11 @@ import java.util.List;
 @RequestMapping("/cars")
 public class CarController {
     private CarDAO carDAO;
+    private CarService carService;
 
     @GetMapping
     public ResponseEntity<List<CarResponseDTO>> getAll() {
-        List<CarModel> cars = carDAO.findAll();
-        List<CarResponseDTO> newCars = new ArrayList<>();
-        for (CarModel car : cars) {
-            CarResponseDTO dto = new CarResponseDTO(car);
-            newCars.add(dto);
-        }
-        return new ResponseEntity<>(newCars, HttpStatus.OK);
+        return new ResponseEntity<>(carService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping

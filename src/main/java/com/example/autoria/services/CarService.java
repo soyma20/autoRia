@@ -45,14 +45,11 @@ public class CarService {
         carDAO.deleteById(id);
     }
 
-    public void addImage(Integer id, List<MultipartFile> files) throws IOException {
+    public void addImage(Integer id, MultipartFile file) throws IOException {
 
         CarModel carModel = carDAO.findById(id).get();
-        for (MultipartFile file : files) {
             file.transferTo(new File(System.getProperty("user.home") + File.separator + "newfiles" + File.separator + file.getOriginalFilename()));
             carModel.addImagePath(new ImagePath(file.getOriginalFilename()));
-        }
-
-
+            carDAO.save(carModel);
     }
 }

@@ -43,8 +43,8 @@ public class CarController {
         carService.updateCar(carModel);
     }
     @PatchMapping("/{id}")
-    public void addImage(@PathVariable Integer id, @RequestBody List<MultipartFile> files) throws IOException {
-        carService.addImage(id, files);
+    public void addImage(@PathVariable Integer id, @RequestParam MultipartFile file) throws IOException {
+        carService.addImage(id, file);
     }
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

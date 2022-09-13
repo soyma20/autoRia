@@ -23,6 +23,10 @@ public class CarController {
     public ResponseEntity<List<CarResponseDTO>> getAll() {
         return new ResponseEntity<>(carService.getAll(), HttpStatus.OK);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<CarResponseDTO> getById(@RequestBody Integer id){
+        return new ResponseEntity<>(carService.getById(id), HttpStatus.OK);
+    }
 
     @PostMapping
     public void create(@RequestParam String description,
@@ -30,7 +34,6 @@ public class CarController {
                        @RequestParam Integer price,
                        @RequestParam MultipartFile file) throws IOException {
         carService.createCar(description, year, price, file);
-
     }
 
 }

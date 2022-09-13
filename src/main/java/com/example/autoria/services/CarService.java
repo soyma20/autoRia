@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -18,22 +19,21 @@ public class CarService {
     private CarDAO carDAO;
 
     public List<CarResponseDTO> getAll() {
-
-        List<CarModel> cars = carDAO.findAll();
-        List<CarResponseDTO> newCars = new ArrayList<>();
-        for (CarModel car : cars) {
-            CarResponseDTO dto = new CarResponseDTO(car);
-            newCars.add(dto);
-        }
-        return newCars;
+        return carDAO.findAll().stream().map(CarResponseDTO::new).collect(Collectors.toList());
+    }
+    public CarResponseDTO getById(Integer id) {
+        return carDAO.findById(id).map(CarResponseDTO::new).get();
     }
 
     public void createCar(String description, Integer year, Integer price, MultipartFile file) throws IOException {
-        String filename = file.getOriginalFilename();
-        String userHome = System.getProperty("user.home");
-        File dest = new File(userHome + File.separator + "newfiles" + File.separator + filename);
-        file.transferTo(dest);
-        CarModel car = new CarModel(description, year, price, filename);
+        file.transferTo(new File(System.getProperty("user.home") + File.separator + "newfiles" + File.separator + file.getOriginalFilename()));
+        CarModel car = new CarModel(description, year, price, file.getOriginalFilename());
         carDAO.save(car);
+    }
+    public void updateCar(CarModel carModel){
+        carDAO.save(carModel);
+    }
+    public void deleteCar(Integer id){
+        carDAO.deleteById(id);
     }
 }

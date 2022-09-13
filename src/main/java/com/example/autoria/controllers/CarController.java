@@ -34,8 +34,8 @@ public class CarController {
     public void create(@RequestParam String description,
                        @RequestParam Integer year,
                        @RequestParam Integer price,
-                       @RequestParam MultipartFile file) throws IOException {
-        carService.createCar(description, year, price, file);
+                       @RequestParam List<MultipartFile> files) throws IOException {
+        carService.createCar(description, year, price, files);
     }
     @PatchMapping()
     @ResponseStatus(HttpStatus.ACCEPTED)

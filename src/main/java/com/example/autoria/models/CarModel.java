@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,13 +19,21 @@ public class CarModel {
     private int price;
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
-    private String imagePath; //name of file
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name= "car_images",
+            joinColumns = @JoinColumn(name = "car_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id")
+    )
+    private List<ImagePath> imagesPath = new ArrayList<>(); //name of file
 
-    public CarModel(String description, int year, int price,  String imagePath) {
+    public CarModel(String description, int year, int price) {
         this.description = description;
         this.year = year;
         this.price = price;
+    }
 
-        this.imagePath = imagePath;
+    public void addImagePath(ImagePath imagePath) {
+        this.imagesPath.add(imagePath);
     }
 }

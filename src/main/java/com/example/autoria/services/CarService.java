@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,5 +43,16 @@ public class CarService {
 
     public void deleteCar(Integer id) {
         carDAO.deleteById(id);
+    }
+
+    public void addImage(Integer id, List<MultipartFile> files) throws IOException {
+
+        CarModel carModel = carDAO.findById(id).get();
+        for (MultipartFile file : files) {
+            file.transferTo(new File(System.getProperty("user.home") + File.separator + "newfiles" + File.separator + file.getOriginalFilename()));
+            carModel.addImagePath(new ImagePath(file.getOriginalFilename()));
+        }
+
+
     }
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CarResponseDTO {
+    private int car_id;
     private String description;
     private int year;
     private int price;
@@ -23,6 +24,7 @@ public class CarResponseDTO {
     private List<ImagePath> imagesPath; //name of file
 
     public CarResponseDTO(CarModel carModel){
+        this.car_id= carModel.getId();
         this.description = carModel.getDescription();
         this.year = carModel.getYear();
         this.price = carModel.getPrice();
